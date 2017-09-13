@@ -357,11 +357,12 @@ public class MongoDBDriver implements IDriver
 			{
 				MongoClientOptions clientOptions = clientOptionsBuilder
 						.build( );
-				InetAddress addr = InetAddress.getByName( kerberosPrincipal );
 				List<MongoCredential> mongoCredentials = new ArrayList<MongoCredential>( );
 				MongoCredential mongoCredential = null;
 				if ( useKerberos.equals( "true" ) )
 				{
+					InetAddress addr = InetAddress
+							.getByName( kerberosPrincipal );
 					mongoCredential = MongoCredential
 							.createGSSAPICredential( userName );
 					if ( serviceName != null && !serviceName.isEmpty( ) )
@@ -435,17 +436,14 @@ public class MongoDBDriver implements IDriver
 			m_connProperties = new Properties( );
 			for ( String propertyName : connProperties.stringPropertyNames( ) )
 			{
-				System.out.println( "propertyName :: " + propertyName );
-				System.out.println(
-						"connProperties.getProperty( propertyName ) :: "
-								+ connProperties.getProperty( propertyName ) );
+				
 				m_connProperties.setProperty( propertyName,
 						connProperties.getProperty( propertyName ) );
 				
 				if ( propertyName.equals( MONGO_URI_PROP ) )
 				{
 					MongoClientURI mongoUri = getMongoURI( connProperties );
-					if ( mongoUri.getUsername( ) != null )
+					if ( mongoUri != null && mongoUri.getUsername( ) != null )
 					{
 						m_connProperties.setProperty( USERNAME_PROP,
 								mongoUri.getUsername( ) );
